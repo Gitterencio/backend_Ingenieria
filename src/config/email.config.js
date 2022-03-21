@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
-const urlBase ='http://localhost:4200';
-//const urlBase ='https://app-frontendingenieria.herokuapp.com';
+//const urlBase ='http://localhost:4200';
+const urlBase ='https://app-frontendingenieria.herokuapp.com';
 
 const mail ={
     user:'pruebas.mrcoffee@hotmail.com',
