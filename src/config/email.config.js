@@ -9,6 +9,7 @@ const mail ={
 };
 
 var transporter = nodemailer.createTransport(({
+    service:'hotmail',
     host: "smtp-mail.outlook.com", // hostname
     secureConnection: false, // TLS requires secureConnection to be false
     port: 587, // port for secure SMTP
