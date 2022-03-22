@@ -107,7 +107,7 @@ const verifyUser = async (req, res) => {
      if(!data){
         res.send({mensaje:'Error en data token'});
         console.log("Error en data token");
-      };
+      }else{
 
       //OPTENER CORREO DEL USUARIO
       const email = data.data;
@@ -147,7 +147,7 @@ const verifyUser = async (req, res) => {
 
       });
     
-      
+    }
 };
 
 
@@ -243,7 +243,7 @@ const  resetPasswordForm = async (req, res) => {
     if(!data){
        res.send({mensaje:'Error en data token'});
        console.log("Error en data token");
-     };
+     }else{
 
      //OPTENER CORREO DEL USUARIO
      const email = data.data;
@@ -269,7 +269,7 @@ const  resetPasswordForm = async (req, res) => {
    
 
    
- 
+    }
 
 };
 
