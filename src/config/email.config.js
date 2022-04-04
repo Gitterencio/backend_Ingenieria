@@ -15,6 +15,8 @@ var transporter = nodemailer.createTransport(({
     tls: {
        ciphers:'SSLv3'
     },
+    //service: 'gmail',
+    //host: 'smtp.gmail.com',
     auth: {
       user: mail.user,
       pass: mail.pass

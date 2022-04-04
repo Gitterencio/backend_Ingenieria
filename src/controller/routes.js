@@ -6,6 +6,9 @@ const router = express.Router();
 
 const users = require('./users');
 const direcciones = require('./direcciones');
+const categorias = require('./categorias');
+const productos = require('./productos');
+const multer = require("../config/multer.config");
 
 //SERVIDOR
 router.get('/',(req,res)=>{nodeS = { server :"Node server online" }; res.render('index.html',{nodeS });});
@@ -25,13 +28,29 @@ router.post('/resetPasswordForm/token',users.resetPasswordForm);
 router.post('/resetPasswordForm/guardar',users.resetPasswordGuardar);
 
 //IMAGEN DE PERFIL
-router.post('/insertImagenPerfil',users.insertImagenPerfil);
+router.post('/insertImagenPerfil/:id',multer.cargarArchivo.single('imagenPerfil'),users.insertImagenPerfil);
 
 //DIRECCIONES
 router.get('/datosregistro',direcciones.getAll_departamentos_municipios);
 
+//CATEGORTIAS
+router.get('/datosregistroProducto',categorias.getAll_categorias);
 
-//testeo de base de datos
+//PRODUCTO
+router.post('/insertNewProducto/:id',multer.cargarArchivo.array('imagenesProducto',4),productos.insertNewProducto);
+
+router.get('/getProductosMuestra',productos.getProductosMuestra);
+
+router.get('/getProductosCategoria',productos.getProductosCategoria);
+
+router.get('/getProductosUsuario',productos.getProductosUsuario);
+
+router.get('/getProductoDetalle',productos.getProductoDetalle);
+
+router.get('/setInhabilitarProducto',productos.setInhabilitarProducto);
+
 router.get('/test',users.test);
+router.get('/testImagen',productos.testImg);
+
 
 module.exports = router;
