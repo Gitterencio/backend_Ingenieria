@@ -1,6 +1,7 @@
 const express= require('express');
 const path =require('path');
 const fs = require('fs');
+const cron = require('node-cron');
 
 const router = express.Router();
 
@@ -8,7 +9,14 @@ const users = require('./users');
 const direcciones = require('./direcciones');
 const categorias = require('./categorias');
 const productos = require('./productos');
+const calificaDenuncia = require('./calificaciones.denuncias');
+const suscripciones = require('./suscripciones');
+const chats = require('./chats');
+const publicidad = require('./publicidad');
+const PDFMaker = require('./PDFMaker');
+
 const multer = require("../config/multer.config");
+
 
 //SERVIDOR
 router.get('/',(req,res)=>{nodeS = { server :"Node server online" }; res.render('index.html',{nodeS });});
@@ -17,6 +25,10 @@ router.get('/',(req,res)=>{nodeS = { server :"Node server online" }; res.render(
 router.post('/insertNewUser',users.insertNewUser);
 
 router.post('/loginUsuario', users.LoginUser);
+
+router.get('/infoUsuario/:id', users.infoUser);
+
+router.get('/detallesVendedor/:id', users.detallesVendedor);
 
 router.post('/confirmarCuenta',users.verifyUser);
 
@@ -36,6 +48,12 @@ router.get('/datosregistro',direcciones.getAll_departamentos_municipios);
 //CATEGORTIAS
 router.get('/datosregistroProducto',categorias.getAll_categorias);
 
+router.get('/insertNewCategoria',categorias.insertNewCategoria);
+
+router.get('/actualizarCategoria',categorias.actualizarCategoria);
+
+router.get('/eliminarCategoria',categorias.eliminarCategoria);
+
 //PRODUCTO
 router.post('/insertNewProducto/:id',multer.cargarArchivo.array('imagenesProducto',4),productos.insertNewProducto);
 
@@ -48,6 +66,57 @@ router.get('/getProductosUsuario/:id',productos.getProductosUsuario);
 router.get('/getProductoDetalle/:id',productos.getProductoDetalle);
 
 router.get('/setInhabilitarProducto/:id',productos.setInhabilitarProducto);
+
+//CALIFICACIONES_DENUNCIAS
+
+router.post('/calificarVendedor',calificaDenuncia.calificarVendedor);
+
+router.get('/getCalificacionMedia/:id',calificaDenuncia.calificacionMedia);
+
+router.post('/recibirDenuncia',calificaDenuncia.recibirDenuncia);
+
+router.get('/getDenuncias',calificaDenuncia.getAll_Denuncias);
+
+router.get('/tacharDenuncia',calificaDenuncia.tacharDenuncia);
+
+router.get('/getDenunciasResueltas',calificaDenuncia.getAll_DenunciasResueltas);
+
+//SUSCRIPCIONES 
+router.post('/suscribirCategoria',suscripciones.suscribirCategoria);
+
+router.post('/cancelarSuscripcion',suscripciones.cancelarSuscripcion);
+
+router.get('/suscripcionesCliente/:id',suscripciones.suscripcionesCliente);
+
+//CHATS
+router.post('/enviarMensaje',chats.enviarMensaje);
+
+router.get('/chatPersonas/:id',chats.chatPersonas);
+
+router.get('/mensajesPersona/:usuarioId/:personaId',chats.mensajesPersona);
+
+router.post('/borrarChat',chats.borrarChat);
+
+
+/*Publicidad email,Prueba
+
+            # ┌────────────── second (optional)
+            # │ ┌──────────── minute
+            # │ │ ┌────────── hour
+            # │ │ │ ┌──────── day of month
+            # │ │ │ │ ┌────── month
+            # │ │ │ │ │ ┌──── day of week
+            # │ │ │ │ │ │
+            # │ │ │ │ │ │
+            # * * * * * *         */
+
+cron.schedule('1 58 23 28 * *', function(){
+  console.log('envio automatico');
+  publicidad.publicidadHTML();
+});
+
+router.get('/publicidadPDF',publicidad.publicidadPDF);
+router.get('/pdf',PDFMaker.PDFMaker)
 
 router.get('/test',users.test);
 router.get('/testImagen',productos.testImg);
